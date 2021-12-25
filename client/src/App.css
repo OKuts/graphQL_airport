@@ -1,0 +1,25 @@
+.app {
+  text-align: center;
+}
+
+input, button {
+  margin: 20px;
+}
+
+.userData {
+  display: flex;
+}
+
+.userData>div {
+  border: 1px solid blue;
+  width: 30%;
+}
+
+table, td, th {
+  border: 1px solid #ccc;
+}
+
+p {
+  text-align: left;
+  padding-left: 20px;
+}
