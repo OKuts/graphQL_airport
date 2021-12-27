@@ -14,7 +14,6 @@ const typeDefs = gql`
     type User {
         id: ID!
         name: String!
-        username: String!
         age: Int!
         nationality: Nationality!
         friends: [User]
@@ -34,6 +33,16 @@ const typeDefs = gql`
         GERMANY
         NETHERLANDS
         RUSSIA
+    }
+    
+    input CreateUserInput {
+        name: String!
+        age: Int!
+        nationality: Nationality = CANADA
+    }
+    
+    type Mutation {
+        createUser(input: CreateUserInput!): User!
     }
 `
 module.exports = { typeDefs };

@@ -6,6 +6,10 @@ input, button {
   margin: 20px;
 }
 
+input {
+  width: 50px;
+}
+
 .userData {
   display: flex;
 }

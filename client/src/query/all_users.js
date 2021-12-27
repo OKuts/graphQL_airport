@@ -5,7 +5,6 @@ export const QUERY_ALL_USERS = gql`
       users {
         id
         name
-        username
         age
         nationality
         chosenFlights {

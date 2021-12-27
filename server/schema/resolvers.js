@@ -42,6 +42,15 @@ const resolvers = {
             const passengers = userList.filter(user => user.doneFlights ? user.doneFlights.includes(Number(args.id)) : false)
             return passengers.length ? {...flight, passengers } : flight
         },
+    },
+    Mutation: {
+        createUser: (parent, args) => {
+            const user = args.input;
+            user.id = userList.length + 1;
+            userList.push(user);
+            console.log(userList)
+            return user;
+        },
     }
 };
 
