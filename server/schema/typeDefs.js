@@ -25,6 +25,7 @@ const typeDefs = gql`
         users: [User!]!
         user(id: ID!): User!
         flights: [Flight]!
+        temp: [Flight]!
         flight(id: ID!): Flight!
     }
     
@@ -33,6 +34,7 @@ const typeDefs = gql`
         GERMANY
         NETHERLANDS
         RUSSIA
+        UKRAINE
     }
     
     input CreateUserInput {

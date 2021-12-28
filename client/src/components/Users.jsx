@@ -1,7 +1,6 @@
 import {UserTable} from "./UserTable";
 
 export const Users = ({users}) => {
-    console.log(users)
     return (
         <>
             <h1>Users</h1>

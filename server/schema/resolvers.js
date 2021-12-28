@@ -1,5 +1,7 @@
 const userList = require('../data/userData');
 const flightList = require('../data/flightData');
+// const Users = require('../models/users');
+const Flights = require('../models/flights');
 
 const getUserFlights = user => {
     return {...user, chosenFlights: user.doneFlights.map((item, i)=> flightList[item])}
@@ -38,18 +40,24 @@ const resolvers = {
         },
 
         flight: (parent, args) => {
-            const flight =  flightList.filter(({id}) => id == args.id)[0];
+            const flight =  flightList.filter(({id}) => id == args.id)[0]
             const passengers = userList.filter(user => user.doneFlights ? user.doneFlights.includes(Number(args.id)) : false)
             return passengers.length ? {...flight, passengers } : flight
         },
+
+        temp: async () => {
+            const out = await Flights.find()
+            console.log(out)
+            return out
+        }
     },
     Mutation: {
         createUser: (parent, args) => {
-            const user = args.input;
-            user.id = userList.length + 1;
-            userList.push(user);
-            console.log(userList)
-            return user;
+            const user = args.input
+            user.id = userList.length + 1
+            userList.push(user)
+            // console.log(user)
+            return user
         },
     }
 };
