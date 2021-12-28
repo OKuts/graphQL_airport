@@ -6,17 +6,12 @@ input, button {
   margin: 20px;
 }
 
-input {
-  width: 50px;
-}
-
 .userData {
   display: flex;
 }
 
 .userData>div {
   border: 1px solid blue;
-  width: 30%;
 }
 
 table, td, th {

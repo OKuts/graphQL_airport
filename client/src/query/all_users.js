@@ -10,7 +10,6 @@ export const QUERY_ALL_USERS = gql`
         chosenFlights {
             id
             date
-            time
             name
             direct
         }

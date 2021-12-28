@@ -5,7 +5,6 @@ export const QUERY_ALL_FLIGHTS = gql`
       flights {
         id
         date
-        time
         name
         direct
         passengers {

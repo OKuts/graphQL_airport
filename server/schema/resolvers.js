@@ -1,29 +1,36 @@
-const userList = require('../data/userData');
-const flightList = require('../data/flightData');
-// const Users = require('../models/users');
+const Users = require('../models/users');
 const Flights = require('../models/flights');
 
-const getUserFlights = user => {
-    return {...user, chosenFlights: user.doneFlights.map((item, i)=> flightList[item])}
+const getUserFlights = async (user) => {
+
+    const flightList = await Flights.find();
+    user.chosenFlights = user.doneFlights.map(item => flightList.find(flight => flight.id === item))
+
+    return user
 }
 
 const resolvers = {
     Query: {
-        users: () => {
+        users: async () => {
+            const userList = await Users.find();
             return userList.map(user => {
                 return user.doneFlights ? getUserFlights(user) : user
             })
         },
 
-        user: (parent, args) => {
-            const user = userList.filter(({id}) => id == args.id)[0]
+        user: async (parent, args) => {
+            const userList = await Users.find();
+            const user = userList.filter(({id}) => id === args.id)[0]
             if (user.doneFlights) {
                 return getUserFlights(user)
             }
             return user
         },
 
-        flights: () => {
+        flights: async () => {
+            const userList = await Users.find();
+            const flightList = await Flights.find();
+
             const flights = []
             userList.forEach(user => {
                 if (user.doneFlights) {
@@ -31,33 +38,33 @@ const resolvers = {
                 }
             })
             const useFlights = [...new Set(flights)]
+
             return flightList.map((flight, i) => {
-                return useFlights.includes(Number(flight.id))
-                    ? {...flight, passengers: userList.filter(user =>
-                            user.doneFlights ? user.doneFlights.includes(Number(flight.id)) : false)}
-                    : flight
+                if (useFlights.includes(flight.id)) flight.passengers = userList.filter(user =>
+                    user.doneFlights && user.doneFlights.includes(flight.id))
+                return flight
             });
         },
 
-        flight: (parent, args) => {
-            const flight =  flightList.filter(({id}) => id == args.id)[0]
+        flight: async (parent, args) => {
+            const userList = await Users.find();
+            const flightList = await Flights.find();
+            const flight = flightList.filter(({id}) => id === args.id)[0]
             const passengers = userList.filter(user => user.doneFlights ? user.doneFlights.includes(Number(args.id)) : false)
-            return passengers.length ? {...flight, passengers } : flight
+            return passengers.length ? {...flight, passengers} : flight
         },
 
         temp: async () => {
             const out = await Flights.find()
-            console.log(out)
             return out
         }
     },
     Mutation: {
-        createUser: (parent, args) => {
-            const user = args.input
-            user.id = userList.length + 1
-            userList.push(user)
-            // console.log(user)
-            return user
+        createUser: async (parent, args) => {
+
+            const newUser = new Users({...args.input})
+            await newUser.save()
+            return args.input
         },
     }
 };

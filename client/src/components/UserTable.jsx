@@ -5,7 +5,6 @@ export const UserTable = ({chosenFlights}) => {
             <tr>
                 <th>id</th>
                 <th>date</th>
-                <th>time</th>
                 <th>name</th>
                 <th>direct</th>
             </tr>
@@ -15,7 +14,6 @@ export const UserTable = ({chosenFlights}) => {
                 <tr key={id}>
                     <td>{id}</td>
                     <td>{date}</td>
-                    <td>{time}</td>
                     <td>{name}</td>
                     <td>{direct}</td>
                 </tr>

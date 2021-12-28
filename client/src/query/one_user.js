@@ -7,11 +7,9 @@ export const QUERY_ONE_USER = gql`
         name
         age
         nationality
-        doneFlights
         chosenFlights {
             id
             date
-            time
             name
             direct
         }

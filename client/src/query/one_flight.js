@@ -6,7 +6,6 @@ export const QUERY_ONE_FLIGHT = gql`
         id
         name
         date
-        time
         direct
         passengers {
             name
