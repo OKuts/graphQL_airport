@@ -1,0 +1,35 @@
+.app-nav {
+  display: flex;
+
+  &__item {
+    padding: 20px;
+
+    &:hover {
+      color: blueviolet;
+    }
+  }
+}
+
+.submenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background-color: #96acd4;
+  color: aliceblue;
+
+  span {
+    padding: 0 20px;
+
+    &:hover {
+      color: blueviolet;
+    }
+  }
+}
+
+.app-nav, .submenu {
+  .active {
+    color: blueviolet;
+    text-decoration: underline;
+  }
+}

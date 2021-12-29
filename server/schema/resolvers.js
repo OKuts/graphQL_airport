@@ -20,7 +20,7 @@ const resolvers = {
 
         user: async (parent, args) => {
             const userList = await Users.find();
-            const user = userList.filter(({id}) => id === args.id)[0]
+            const user = userList.find(({id}) => id === args.id)
             if (user.doneFlights) {
                 return getUserFlights(user)
             }
@@ -49,7 +49,7 @@ const resolvers = {
         flight: async (parent, args) => {
             const userList = await Users.find();
             const flightList = await Flights.find();
-            const flight = flightList.filter(({id}) => id === args.id)[0]
+            const flight = flightList.find(({id}) => id === args.id)
             const passengers = userList.filter(user => user.doneFlights ? user.doneFlights.includes(Number(args.id)) : false)
             return passengers.length ? {...flight, passengers} : flight
         },
@@ -63,8 +63,8 @@ const resolvers = {
         createUser: async (parent, args) => {
 
             const newUser = new Users({...args.input})
-            await newUser.save()
-            return args.input
+
+            return await newUser.save()
         },
     }
 };

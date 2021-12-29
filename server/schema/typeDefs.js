@@ -43,8 +43,20 @@ const typeDefs = gql`
         nationality: Nationality = CANADA
     }
     
+    input CreateFlightInput {
+        name: String!
+        direct: String!
+    }
+    
+    input CreateUserFlightInput {
+        userId: String!
+        flightId: String!
+    }
+    
     type Mutation {
         createUser(input: CreateUserInput!): User!
+        createFlight(input: CreateFlightInput!): Flight!
+        createUserFlight(input: CreateUserFlightInput!): User!
     }
 `
 module.exports = { typeDefs };

@@ -1,6 +1,6 @@
 import {UserTable} from "./UserTable";
 
-export const Users = ({users}) => {
+export const ClientsList = ({users}) => {
     return (
         <>
             <h1>Users</h1>

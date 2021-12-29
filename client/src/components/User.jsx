@@ -6,7 +6,7 @@ export const User = ({user}) => {
             <h1>User</h1>
             <p>{`Name: ${user.name}`}</p>
             <p>{`Age: ${user.age}`}</p>
-            {user.chosenFlights
+            {user.chosenFlights.length
                 ? <UserTable chosenFlights={user.chosenFlights}/>
                 : <p>Not flights</p>
             }
