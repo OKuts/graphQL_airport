@@ -26,8 +26,8 @@ export const DisplayData = () => {
                 return !userLoading && userId && !userError ? <User user={user.user}/> : <h1>Loading ...</h1>
             case 2 :
                 return !flightsLoading && !flightsError ? <FlightsList flights={flights.flights}/> : null
-            case 4 :
-                return !flightLoading && flightId && !flightError ? <Flight flight={flight.flight}/> : <h1>Loading ...</h1>
+            // case 4 :
+            //     return !flightLoading && flightId && !flightError ? <Flight flight={flight.flight}/> : <h1>Loading ...</h1>
 
             default:
                 return <h1>Select option</h1>

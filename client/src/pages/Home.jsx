@@ -4,6 +4,7 @@ import {clientsNav, flightsNav, mainNavLinks} from "../config/configData";
 import {SubMenu} from "../components/SubMenu";
 import {useQuery} from "@apollo/client";
 import {QUERY_ALL_FLIGHTS, QUERY_ALL_USERS} from "../query";
+import {NewClient} from "../components/NewClient";
 
 export const Home = () => {
     const [mainMenu, setMainMenu] = useState(0)
@@ -15,8 +16,9 @@ export const Home = () => {
 
     const showComponent = () => {
         const item = `${mainMenu}${subMenu}`
+        console.log(item)
         switch (item) {
-            case '11': return null
+            case '11': return <NewClient />
             case '12': return null
             case '13': return !usersLoading && !usersError ? <ClientsList users={users.users}/> : null
             case '21': return null

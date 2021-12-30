@@ -1,4 +1,3 @@
-export * from './Flight'
 export * from './FlightsList'
 export * from './FlightsList'
 export * from './ClientsList'

@@ -1,0 +1,59 @@
+.client-wrapper {
+  height: 0;
+  width: 300px;
+  margin: 0 auto;
+  transition: height 2s ease;
+  overflow: hidden;
+
+  form {
+    height: 300px;
+    width: 300px;
+
+    select, input {
+      display: inline-block;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 5px;
+      border: none;
+      outline:none;
+    }
+
+    label {
+      display: inline-block;
+      width: 100px;
+      color:blueviolet;
+    }
+
+    div {
+      margin-bottom: 20px;
+      display: flex;
+
+      div {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          display: inline-block;
+          height: 12px;
+          color: orangered;
+          font-size: 10px;
+        }
+      }
+    }
+
+    .submit-wrapper {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 50px;
+
+      input {
+        background-color: #96acd4;
+        border-radius: 15px;
+      }
+    }
+  }
+}
+
+.client-wrapper.show {
+  height: 400px;
+}

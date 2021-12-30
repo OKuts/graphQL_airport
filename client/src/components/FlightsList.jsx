@@ -1,4 +1,6 @@
 import {useState, Fragment} from "react";
+import arrowDown from '../images/arrow-down.svg'
+import arrowUp from '../images/arrow-up.svg'
 
 export const FlightsList = ({flights}) => {
     const [currentFlight, setCurrentFlight] = useState(null)
@@ -27,7 +29,12 @@ export const FlightsList = ({flights}) => {
                             <td>{direct}</td>
                             <td
                                 onClick={() => setCurrentFlight(currentFlight === i ? null : i)}>
-                                {passengers ? '***' : ''}
+                                {passengers
+                                    ? <img
+                                        className="arrow"
+                                        src={currentFlight === i ? arrowUp : arrowDown}
+                                        alt="arrow-down"/> :
+                                    ''}
                             </td>
                         </tr>
                         {passengers &&
