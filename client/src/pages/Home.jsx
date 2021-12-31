@@ -20,6 +20,8 @@ export const Home = () => {
         refetch: clientsRefetch
     } = useQuery(QUERY_ALL_CLIENTS)
 
+    console.log(clients)
+
     const {
         data: flights,
         loading: flightsLoading,
@@ -31,21 +33,28 @@ export const Home = () => {
 
     const showComponent = () => {
         const item = `${mainMenu}${subMenu}`
-        console.log(item)
+
         switch (item) {
             case '11':
                 return <NewClient refetch={clientsRefetch}/>
             case '12':
                 return null
             case '13':
-                return !clientsLoading && !clientsError ? <ClientsList clients={clients.clients}/> : null
+                return !clientsLoading && !clientsError
+                    ? <ClientsList clients={clients.clients}/> : null
             case '21':
-                return <NewFlight refetch={flightsRefetch} companiesData={companiesData} directData={directsData}/>
+                return <NewFlight
+                    refetch={flightsRefetch}
+                    companiesData={companiesData}
+                    directData={directsData}/>
             case '22':
                 return null
             case '23':
                 return !flightsLoading && !flightsError
-                    ? <FlightsList flights={flights.flights} companiesData={companiesData} directData={directsData}/> : null
+                    ? <FlightsList
+                        flights={flights.flights}
+                        companiesData={companiesData}
+                        directData={directsData}/> : null
         }
     }
 

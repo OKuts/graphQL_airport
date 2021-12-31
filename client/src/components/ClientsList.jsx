@@ -22,7 +22,7 @@ export const ClientsList = ({clients}) => {
                 </thead>
                 <tbody>
                 {clients.map(({id, name, surname, age, citizenship, chosenFlights}, i) =>
-                    <Fragment key={id}>
+                    <Fragment key={i}>
                         <tr className="item-flight">
                             <td>{i + 1}</td>
                             <td>{name}</td>
@@ -30,8 +30,9 @@ export const ClientsList = ({clients}) => {
                             <td>{age}</td>
                             <td>{citizenship}</td>
                             <td
-                                onClick={() => setCurrentClient(currentClient === i ? null : i)}>
-                                {chosenFlights.length
+                                onClick={() => setCurrentClient(currentClient === i ? null : i)}
+                            >
+                                {chosenFlights
                                     ? <img
                                         className="arrow"
                                         src={currentClient === i ? arrowUp : arrowDown}
@@ -42,8 +43,8 @@ export const ClientsList = ({clients}) => {
                         {chosenFlights &&
                         <tr className={currentClient === i ? "item-client show" : "item-client"}>
                             <td colSpan="5">
-                                {chosenFlights.map(flight => <p key={flight.id}>
-                                    {flight.name} {flight.date} {flight.direct}</p>)}
+                                {chosenFlights.map((flight, i) => <p key={i}>
+                                    {flight.date} {flight.time} {flight.company} {flight.direct}</p>)}
                             </td>
                         </tr>}
                     </Fragment>

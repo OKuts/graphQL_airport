@@ -7,7 +7,7 @@ import {CREATE_DIRECT} from "../mutations/create_direct";
 import {formFlightSchema} from "./schemas/formFlightSchema";
 import {CREATE_FLIGHT} from "../mutations/create_flight";
 
-export const NewFlight = ({companiesData, directData}) => {
+export const NewFlight = ({companiesData, directData, refetch}) => {
     const [createCompany] = useMutation(CREATE_COMPANY);
     const [createDirect] = useMutation(CREATE_DIRECT);
     const [createFlight] = useMutation(CREATE_FLIGHT);
@@ -28,8 +28,6 @@ export const NewFlight = ({companiesData, directData}) => {
         reset();
         let findCompanyId = companies.companies.find(company => company.name === formData.company)?.id
         let findDirectId = directs.directs.find(direct => direct.direct === formData.direct)?.id
-        console.log(findCompanyId)
-        console.log(findDirectId)
 
         if (!findCompanyId) await createCompany({
             variables: {
@@ -62,7 +60,9 @@ export const NewFlight = ({companiesData, directData}) => {
                     time: formData.time
                 }
             }
-        })
+        }).then(
+            refetch()
+        )
     })
 
     return (

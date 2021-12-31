@@ -1,9 +1,10 @@
 const {Schema, model} = require('mongoose');
 
 const flightSchema = new Schema({
-    name: String,
-    direct: String,
+    companyId: String,
+    directId: String,
     date: String,
+    time: String
 });
 
 module.exports = model('Flights', flightSchema);

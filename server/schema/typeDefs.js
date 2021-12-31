@@ -1,62 +1,80 @@
 const { gql } = require('apollo-server')
 
 const typeDefs = gql`
-
+    
+    type FlightOut {
+        id: ID!
+        date: String!
+        time: String!
+        company: String!
+        direct: String!
+    }
+    
     type Flight {
         id: ID!
         date: String!
         time: String!
-        name: String!
-        direct: String!
-        passengers: [User]
+        companyId: String!
+        directId: String!
+        passengers: [Client]
     }
 
-    type User {
+    type Client {
         id: ID!
         name: String!
+        surname: String!
         age: Int!
-        nationality: Nationality!
-        friends: [User]
-        doneFlights: [Int!]
-        chosenFlights: [Flight!]
+        citizenship: String!
+        doneFlights: [String!]
+        chosenFlights: [FlightOut!]
+    }
+    
+    type Direct {
+        id: ID!
+        direct: String!
+    }
+    
+    type Company {
+        id: ID!
+        name: String!
     }
 
     type Query {
-        users: [User!]!
-        user(id: ID!): User!
-        flights: [Flight]!
-        temp: [Flight]!
+        clients: [Client!]!
+        flights: [Flight!]!      
+        directs: [Direct!]! 
+        companies: [Company!]! 
+        
         flight(id: ID!): Flight!
     }
     
-    enum Nationality {
-        CANADA
-        GERMANY
-        NETHERLANDS
-        RUSSIA
-        UKRAINE
-    }
-    
-    input CreateUserInput {
+    input CreateClientInput {
         name: String!
+        surname: String!
         age: Int!
-        nationality: Nationality = CANADA
+        citizenship: String!
     }
     
     input CreateFlightInput {
+        companyId: String!
+        directId: String!
+        date: String!
+        time: String!
+    }
+    
+    input CreateCompanyInput {
         name: String!
+    }
+    
+        input CreateDirectInput {
         direct: String!
     }
     
-    input CreateUserFlightInput {
-        userId: String!
-        flightId: String!
-    }
-    
     type Mutation {
-        createUser(input: CreateUserInput!): User!
+        createClient(input: CreateClientInput!): Client!
+        createCompany(input: CreateCompanyInput!): Company!
+        createDirect(input: CreateDirectInput!): Direct!
         createFlight(input: CreateFlightInput!): Flight!
-        createUserFlight(input: CreateUserFlightInput!): User!
     }
 `
 module.exports = { typeDefs };

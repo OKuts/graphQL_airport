@@ -9,9 +9,9 @@ export const QUERY_ALL_CLIENTS = gql`
         age
         citizenship
         chosenFlights {
-            id
             date
-            name
+            time
+            company
             direct
         }
       }

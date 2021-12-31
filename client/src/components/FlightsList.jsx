@@ -1,13 +1,12 @@
 import {useState, Fragment} from "react";
 import arrowDown from '../images/arrow-down.svg'
 import arrowUp from '../images/arrow-up.svg'
-
-const getValue = (arr, key, value, outName) => arr.find(el => el.id === value)[outName]
+import {getValue} from "../helpers/getValue";
 
 export const FlightsList = ({flights, companiesData, directData}) => {
     const [currentFlight, setCurrentFlight] = useState(null)
-    const {data: companies, loading: companiesLoading, error: companiesError, refetch: companiesRefetch} = companiesData
-    const {data: directs, loading: directsLoading, error: directsError, refetch: directsRefetch} = directData
+    const {data: companies} = companiesData
+    const {data: directs} = directData
 
     return (
         <>
@@ -46,8 +45,8 @@ export const FlightsList = ({flights, companiesData, directData}) => {
                         {passengers &&
                             <tr className={currentFlight === i ? "item-client show": "item-client"}>
                                 <td colSpan="5">
-                                    {passengers.map(({id, name, surname, citizenship}) => <p key={id}>
-                                        {name} {surname} {citizenship} </p>)}
+                                    {passengers.map(({id, name, surname, age, citizenship}) => <p key={id}>
+                                        {name} {surname} {age} {citizenship} </p>)}
                                 </td>
                             </tr>}
                     </Fragment>
