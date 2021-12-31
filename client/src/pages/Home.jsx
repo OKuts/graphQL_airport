@@ -1,13 +1,18 @@
-import {ClientsList, CompanyList, DirectList, FlightsList, Header, NewClient, NewFlight} from "../components";
+import {ClientsList, FlightsList, Header, NewClient, NewFlight} from "../components";
 import {useEffect, useState} from "react";
-import {clientsNav, companiesNav, flightsNav, mainNavLinks} from "../config/configData";
+import {clientsNav, flightsNav, mainNavLinks} from "../config/configData";
 import {SubMenu} from "../components/SubMenu";
 import {useQuery} from "@apollo/client";
 import {QUERY_ALL_CLIENTS, QUERY_ALL_FLIGHTS} from "../query";
+import {QUERY_ALL_COMPANIES} from "../query/all_companies";
+import {QUERY_ALL_DIRECTS} from "../query/all_directs";
 
 export const Home = () => {
     const [mainMenu, setMainMenu] = useState(0)
     const [subMenu, setSubMenu] = useState(0)
+    const companiesData = useQuery(QUERY_ALL_COMPANIES)
+    const directsData = useQuery(QUERY_ALL_DIRECTS)
+
     const {
         data: clients,
         loading: clientsLoading,
@@ -35,19 +40,14 @@ export const Home = () => {
             case '13':
                 return !clientsLoading && !clientsError ? <ClientsList clients={clients.clients}/> : null
             case '21':
-                return <NewFlight refetch={flightsRefetch} />
+                return <NewFlight refetch={flightsRefetch} companiesData={companiesData} directData={directsData}/>
             case '22':
                 return null
             case '23':
                 return !flightsLoading && !flightsError
-                    ? <FlightsList flights={flights.flights}/> : null
-            case '31':
-                return <CompanyList />
-            case '32':
-                return <DirectList />
+                    ? <FlightsList flights={flights.flights} companiesData={companiesData} directData={directsData}/> : null
         }
     }
-
 
     return (
         <div>
@@ -57,7 +57,7 @@ export const Home = () => {
                 handler={setMainMenu}/>
             {mainMenu !== 0 &&
             <SubMenu
-                list={mainMenu === 1 ? clientsNav : mainMenu === 2 ? flightsNav : companiesNav}
+                list={mainMenu === 1 ? clientsNav : flightsNav}
                 menu={subMenu}
                 handler={setSubMenu}/>}
             <div className={subMenu ? 'site-wrapper background' : 'site-wrapper'}>

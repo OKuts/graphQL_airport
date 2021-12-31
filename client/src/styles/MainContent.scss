@@ -41,6 +41,21 @@
 
   .companies, .directs {
     width: 150px;
+
+    h3 {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #96acd4;
+    }
+
+    p {
+      padding: 5px;
+
+      &:hover {
+        cursor: pointer;
+        font-weight: bold;
+        background-color: #d9e4f4;
+      }
+    }
   }
 }
 

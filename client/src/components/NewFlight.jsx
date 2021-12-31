@@ -1,39 +1,82 @@
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {formClientSchema} from "./schemas/formClientSchema";
-import {useQuery} from "@apollo/client";
-import {QUERY_ALL_COMPANIES} from "../query/all_companies";
-import {QUERY_ALL_DIRECTS} from "../query/all_directs";
+import {useMutation, useQuery} from "@apollo/client";
+import {CREATE_COMPANY} from "../mutations/create_company";
+import {CREATE_DIRECT} from "../mutations/create_direct";
+import {formFlightSchema} from "./schemas/formFlightSchema";
+import {CREATE_FLIGHT} from "../mutations/create_flight";
 
-export const NewFlight = () => {
-    const {data: companies, loading: companiesLoading, error: companiesError} = useQuery(QUERY_ALL_COMPANIES)
-    const {data: directs, loading: directsLoading, error: directsError} = useQuery(QUERY_ALL_DIRECTS)
+export const NewFlight = ({companiesData, directData}) => {
+    const [createCompany] = useMutation(CREATE_COMPANY);
+    const [createDirect] = useMutation(CREATE_DIRECT);
+    const [createFlight] = useMutation(CREATE_FLIGHT);
+    const {data: companies, loading: companiesLoading, error: companiesError, refetch: companiesRefetch} = companiesData
+    const {data: directs, loading: directsLoading, error: directsError, refetch: directsRefetch} = directData
+
 
     const [cn, setCn] = useState('form-wrapper')
 
     useEffect(() => setCn('form-wrapper show'), [])
 
-    const {register, watch, handleSubmit, formState: {errors}} = useForm({
+    const {register, watch, handleSubmit, setValue, reset, formState: {errors}} = useForm({
         mode: 'onTouched',
-        // resolver: yupResolver(formClientSchema),
+        resolver: yupResolver(formFlightSchema),
     })
 
-    const submitFlight = handleSubmit((formData) => {
-        console.log(formData)
-    })
+    const submitFlight = handleSubmit(async (formData) => {
+        reset();
+        let findCompanyId = companies.companies.find(company => company.name === formData.company)?.id
+        let findDirectId = directs.directs.find(direct => direct.direct === formData.direct)?.id
+        console.log(findCompanyId)
+        console.log(findDirectId)
 
-    console.log(watch().company)
+        if (!findCompanyId) await createCompany({
+            variables: {
+                input: {
+                    name: formData.company
+                }
+            }
+        }).then(({createCompany}) => {
+            companiesRefetch()
+            findCompanyId = createCompany.id
+        })
+
+        if (!findDirectId) await createDirect({
+            variables: {
+                input: {
+                    direct: formData.direct
+                }
+            }
+        }).then(({createDirect}) => {
+            directsRefetch()
+            findDirectId = createDirect.id
+        })
+
+        createFlight({
+            variables: {
+                input: {
+                    companyId: findCompanyId,
+                    directId: findDirectId,
+                    date: formData.date,
+                    time: formData.time
+                }
+            }
+        })
+    })
 
     return (
         <div className="registration">
             <div className="companies">
+                <h3>Companies</h3>
                 {!companiesError
                     && !companiesLoading
-                    && companies.companies.map((company, i) =>
+                    && companies.companies.map(company =>
                         company.name.includes(watch().company)
-                            ? <p key={company.id}>{company.name}</p>
-                            : <p key={i} style={{color: 'red'}}>New company</p>)}
+                            && <p
+                                    onClick={() => setValue('company', company.name)}
+                                    key={company.id}>{company.name}</p>)
+                }
             </div>
             <div className={cn}>
                 <form onSubmit={submitFlight}>
@@ -73,12 +116,14 @@ export const NewFlight = () => {
                 </form>
             </div>
             <div className="directs">
+                <h3>Directs</h3>
                 {!directsLoading
                     && !directsError
-                    && directs.directs.map((direct, i) =>
+                    && directs.directs.map(direct =>
                     direct.direct.includes(watch().direct)
-                        ? <p key={direct.id}>{direct.direct}</p>
-                        : <p key={i} style={{color: 'red'}}>New direction</p>)
+                        && <p
+                            onClick={() => setValue('direct', direct.direct)}
+                            key={direct.id}>{direct.direct}</p>)
                 }
             </div>
         </div>
