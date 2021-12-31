@@ -13,7 +13,7 @@ body {
   max-width: 1280px;
   min-width: 360px;
   height: calc(100vh - 110px);
-  padding-top: 50px;
+  padding: 50px 10px 0;
   margin: 0 auto;
 
   &::before {

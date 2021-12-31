@@ -10,7 +10,9 @@ export const QUERY_ALL_FLIGHTS = gql`
         passengers {
             id
             name
+            surname
             age
+            citizenship
         }
       }
     }

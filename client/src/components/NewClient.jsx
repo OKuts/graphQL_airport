@@ -1,22 +1,22 @@
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {formSchema} from "./schemas/formSchema";
+import {formClientSchema} from "./schemas/formClientSchema";
 import {useMutation} from "@apollo/client";
 
 import {CREATE_CLIENT} from "../mutations/create_client";
 
 const citizenship = ['CANADA', 'UKRAINE', 'USA', 'FRANCE']
 
-export const NewClient = () => {
-    const [cn, setCn] = useState('client-wrapper')
+export const NewClient = ({refetch}) => {
+    const [cn, setCn] = useState('form-wrapper')
     const [createClient] = useMutation(CREATE_CLIENT);
 
-    useEffect(() => setCn('client-wrapper show'), [])
+    useEffect(() => setCn('form-wrapper show'), [])
 
     const {register, handleSubmit, formState: {errors}} = useForm({
         mode: 'onTouched',
-        resolver: yupResolver(formSchema),
+        resolver: yupResolver(formClientSchema),
     })
 
     const sendForm = handleSubmit(({name, surname, age, citizenship}) => {
@@ -31,6 +31,7 @@ export const NewClient = () => {
                 }
             }
         }).then(({data}) => {
+            refetch();
             console.log(data)
         }).catch(err => console.log(err))
     })

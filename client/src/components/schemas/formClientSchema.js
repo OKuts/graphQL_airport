@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const formSchema = yup.object().shape({
+export const formClientSchema = yup.object().shape({
     name: yup.string().min(2,'min 2 symbols').required('No input'),
     surname: yup.string().min(2,'min 2 symbols').required('No input'),
     terms: yup.boolean().oneOf([true], 'you do not agree'),

@@ -1,13 +1,18 @@
-export const mainNavLinks = ['Clients', 'Flights']
+export const mainNavLinks = ['Clients', 'Flights', 'Companies']
 
 export const flightsNav = [
     'Registration flight',
     'Get flight data',
-    'Get flight list']
+    'Flights list']
 
 export const clientsNav = [
     'Registration client',
     'Get client data',
-    'Get clients list'
+    'Clients list'
+]
+
+export const companiesNav = [
+    'Companies list',
+    'Directs list'
 ]
 

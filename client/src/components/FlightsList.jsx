@@ -40,13 +40,13 @@ export const FlightsList = ({flights}) => {
                         {passengers &&
                             <tr className={currentFlight === i ? "item-client show": "item-client"}>
                                 <td colSpan="5">
-                                    {passengers.map(person => <p key={person.id}>{person.name}</p>)}
+                                    {passengers.map(({id, name, surname, citizenship}) => <p key={id}>
+                                        {name} {surname} {citizenship} </p>)}
                                 </td>
                             </tr>}
                     </Fragment>
                 )}
                 </tbody>
-
             </table>
             }
         </>
