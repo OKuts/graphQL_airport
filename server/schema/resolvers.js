@@ -21,10 +21,8 @@ const getUserFlights = (client, companyList, directList, flightList) => {
 const resolvers = {
     Query: {
         clients: async () => {
-            const companyList = await Companies.find()
-            const directList = await Directs.find()
-            const clientList = await Clients.find()
-            const flightList = await Flights.find()
+            const [companyList, directList, clientList, flightList] = await Promise.all([
+                Companies.find(), Directs.find(), Clients.find(), Flights.find()])
 
             return clientList.map( client => {
                 return client.doneFlights.length
@@ -33,23 +31,15 @@ const resolvers = {
              })
         },
 
-        companies: async () => {
-            const companyList = await Companies.find();
-            return companyList
-        },
+        companies: async () => await Companies.find(),
 
-        directs: async () => {
-            const directList = await Directs.find();
-            return directList
-        },
+        directs: async () => await Directs.find(),
 
         flights: async () => {
-            const flightList = await Flights.find();
-            const clientList = await Clients.find();
-            const companyList = await Companies.find();
-            const directList = await Directs.find();
-            const flights = []
+            const [companyList, directList, clientList, flightList] = await Promise.all([
+                Companies.find(), Directs.find(), Clients.find(), Flights.find()])
 
+            const flights = []
             clientList.forEach(user => {
                 if (user.doneFlights) {
                     flights.push(...user.doneFlights)
@@ -95,7 +85,6 @@ const resolvers = {
         },
 
         updateClient: async (parent, args) => {
-            console.log('updateClient')
             const clients = await Clients.find();
             const  currentClient = clients.find(client => client.id === args.input.currentClient)
             const out = await Clients.updateOne({_id: currentClient.id},

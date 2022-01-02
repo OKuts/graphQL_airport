@@ -13,7 +13,6 @@ const start = async () => {
         server.listen().then(({ url }) => {
             console.log(`YOUR API IS RUNNING AT: ${url} :)`)
         });
-
     } catch (e) {
         console.log(e)
     }
