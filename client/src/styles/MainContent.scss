@@ -17,12 +17,12 @@
     display: none;
   }
 
-  .arrow {
-    border: 1px solid gray;
-    background-color: #96acd4;
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
+  .arrow-down {
+    color: #434343;
+  }
+
+  .arrow-up {
+    color: blueviolet;
   }
 
   .show {
@@ -61,13 +61,16 @@
 
 .form-wrapper {
   height: 0;
-  width: 300px;
   transition: height 2s ease;
   overflow: hidden;
 
   form {
     height: 300px;
     width: 300px;
+
+    &.new-client {
+      margin: 0 auto;
+    }
 
     select, input {
       display: inline-block;
@@ -116,4 +119,58 @@
 
 .form-wrapper.show {
   height: 400px;
+}
+
+.client-to-flight {
+  display: flex;
+  justify-content: space-evenly;
+
+  table {
+    border-collapse: collapse;
+  }
+
+  tr:hover {
+    cursor: pointer;
+    color: blueviolet;
+
+    td {
+      border-bottom: 1px solid blueviolet;
+    }
+  }
+
+  td {
+    padding: 5px;
+  }
+
+  .select {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 5px;
+    }
+    input {
+      margin-bottom: 20px;
+      height: 30px;
+      font-size: 16px;
+      border: none;
+      outline: 0;
+    }
+
+    button {
+      width: 50px;
+      font-size: 16px;
+      display: inline-block;
+      margin: 0 auto;
+    }
+  }
+}
+
+.result {
+  margin: 0 auto 40px;
+  display: table;
+
+  td {
+    padding: 5px;
+  }
 }

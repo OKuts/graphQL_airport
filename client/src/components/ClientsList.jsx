@@ -32,12 +32,9 @@ export const ClientsList = ({clients}) => {
                             <td
                                 onClick={() => setCurrentClient(currentClient === i ? null : i)}
                             >
-                                {chosenFlights
-                                    ? <img
-                                        className="arrow"
-                                        src={currentClient === i ? arrowUp : arrowDown}
-                                        alt="arrow-down"/> :
-                                    ''}
+                                {chosenFlights && (currentClient === i
+                                    ? <span className="arrow-up">&#9650;</span>
+                                    : <span className="arrow-down">&#9660;</span>)}
                             </td>
                         </tr>
                         {chosenFlights &&
@@ -50,7 +47,6 @@ export const ClientsList = ({clients}) => {
                     </Fragment>
                 )}
                 </tbody>
-
             </table>
             }
         </>

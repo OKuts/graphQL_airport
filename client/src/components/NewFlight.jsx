@@ -6,6 +6,7 @@ import {CREATE_COMPANY} from "../mutations/create_company";
 import {CREATE_DIRECT} from "../mutations/create_direct";
 import {formFlightSchema} from "./schemas/formFlightSchema";
 import {CREATE_FLIGHT} from "../mutations/create_flight";
+import {getValue} from "../helpers/getValue";
 
 export const NewFlight = ({companiesData, directData, refetch}) => {
     const [createCompany] = useMutation(CREATE_COMPANY);
@@ -13,7 +14,7 @@ export const NewFlight = ({companiesData, directData, refetch}) => {
     const [createFlight] = useMutation(CREATE_FLIGHT);
     const {data: companies, loading: companiesLoading, error: companiesError, refetch: companiesRefetch} = companiesData
     const {data: directs, loading: directsLoading, error: directsError, refetch: directsRefetch} = directData
-
+    const [result, setResult] = useState([])
 
     const [cn, setCn] = useState('form-wrapper')
 
@@ -35,9 +36,9 @@ export const NewFlight = ({companiesData, directData, refetch}) => {
                     name: formData.company
                 }
             }
-        }).then(({createCompany}) => {
+        }).then(({data}) => {
             companiesRefetch()
-            findCompanyId = createCompany.id
+            findCompanyId = data.createCompany.id
         })
 
         if (!findDirectId) await createDirect({
@@ -46,9 +47,9 @@ export const NewFlight = ({companiesData, directData, refetch}) => {
                     direct: formData.direct
                 }
             }
-        }).then(({createDirect}) => {
+        }).then(({data}) => {
             directsRefetch()
-            findDirectId = createDirect.id
+            findDirectId = data.createDirect.id
         })
 
         createFlight({
@@ -60,72 +61,92 @@ export const NewFlight = ({companiesData, directData, refetch}) => {
                     time: formData.time
                 }
             }
-        }).then(
+        }).then(({data}) => {
+            const {date, time, companyId, directId} = data.createFlight
+            setResult([ ...result, {date, time,
+                company: getValue(companies.companies, companyId, 'name') ,
+                direct: getValue(directs.directs, directId, 'direct')
+            }])
             refetch()
-        )
+        })
     })
 
     return (
-        <div className="registration">
-            <div className="companies">
-                <h3>Companies</h3>
-                {!companiesError
+        <>
+            <table className="result">
+                <tbody>
+                {result.map((item, i) =>
+                    <tr key={i}>
+                        <td>{item.date}</td>
+                        <td>{item.time}</td>
+                        <td>{item.company}</td>
+                        <td>{item.direct}</td>
+                        <td style={{color: 'green'}}>✔</td>
+                    </tr>)
+                }
+                </tbody>
+            </table>
+            <div className="registration">
+                <div className="companies">
+                    <h3>Companies</h3>
+                    {!companiesError
                     && !companiesLoading
                     && companies.companies.map(company =>
                         company.name.includes(watch().company)
-                            && <p
-                                    onClick={() => setValue('company', company.name)}
-                                    key={company.id}>{company.name}</p>)
-                }
-            </div>
-            <div className={cn}>
-                <form onSubmit={submitFlight}>
-                    <div>
-                        <label htmlFor="name">Company</label>
+                        && <p
+                            onClick={() => setValue('company', company.name)}
+                            key={company.id}>{company.name}</p>)
+                    }
+                </div>
+                <div className={cn}>
+                    <form onSubmit={submitFlight}>
                         <div>
-                            <input type="text" {...register('company')} placeholder="Company"/>
-                            <span>{errors['company']?.message}</span>
-                        </div>
+                            <label htmlFor="name">Company</label>
+                            <div>
+                                <input type="text" {...register('company')} placeholder="Company"/>
+                                <span>{errors['company']?.message}</span>
+                            </div>
 
-                    </div>
-                    <div>
-                        <label htmlFor="direct">Direct</label>
-                        <div>
-                            <input type="text" {...register('direct')} placeholder="Direct"/>
-                            <span>{errors['direct']?.message}</span>
                         </div>
-                    </div>
-                    <div>
-                        <label htmlFor="date">Date</label>
                         <div>
-                            <input type="date" {...register('date')}/>
-                            <span>{errors['date']?.message}</span>
+                            <label htmlFor="direct">Direct</label>
+                            <div>
+                                <input type="text" {...register('direct')} placeholder="Direct"/>
+                                <span>{errors['direct']?.message}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label htmlFor="time">Time</label>
                         <div>
-                            <input type="time" {...register('time')}/>
-                            <span>{errors['time']?.message}</span>
+                            <label htmlFor="date">Date</label>
+                            <div>
+                                <input type="date" {...register('date')}/>
+                                <span>{errors['date']?.message}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="submit-wrapper">
-                        <input type="submit" value="Register"/>
-                        <input type="reset" value="Reset"/>
-                    </div>
-                </form>
-            </div>
-            <div className="directs">
-                <h3>Directs</h3>
-                {!directsLoading
+                        <div>
+                            <label htmlFor="time">Time</label>
+                            <div>
+                                <input type="time" {...register('time')}/>
+                                <span>{errors['time']?.message}</span>
+                            </div>
+                        </div>
+                        <div className="submit-wrapper">
+                            <input type="submit" value="Register"/>
+                            <input type="reset" value="Reset"/>
+                        </div>
+                    </form>
+                </div>
+                <div className="directs">
+                    <h3>Directs</h3>
+                    {!directsLoading
                     && !directsError
                     && directs.directs.map(direct =>
-                    direct.direct.includes(watch().direct)
+                        direct.direct.includes(watch().direct)
                         && <p
                             onClick={() => setValue('direct', direct.direct)}
                             key={direct.id}>{direct.direct}</p>)
-                }
+                    }
+                </div>
             </div>
-        </div>
+        </>
     )
 }

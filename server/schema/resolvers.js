@@ -1,4 +1,3 @@
-const Users = require('../models/users')
 const Clients = require('../models/clients')
 const Flights = require('../models/flights')
 const Companies = require('../models/companies')
@@ -6,8 +5,7 @@ const Directs = require('../models/directs')
 
 const getValue = (arr, key, value, outName) => arr.find(el => el.id === value)[outName]
 
-const getUserFlights = async (client, companyList, directList) => {
-    const flightList = await Flights.find();
+const getUserFlights = (client, companyList, directList, flightList) => {
     client.chosenFlights = client.doneFlights.map(item => {
         const currentFlight = flightList.find(flight => flight.id === item)
         return {
@@ -20,19 +18,18 @@ const getUserFlights = async (client, companyList, directList) => {
     return client
 }
 
-
-
 const resolvers = {
     Query: {
         clients: async () => {
             const companyList = await Companies.find();
             const directList = await Directs.find();
             const clientList = await Clients.find();
-            return clientList.map(client => {
+            const flightList = await Flights.find();
+            return await clientList.map( client => {
                 return client.doneFlights.length
-                    ? getUserFlights(client, companyList, directList)
+                    ? getUserFlights(client, companyList, directList, flightList)
                     : client
-            })
+             })
         },
 
         companies: async () => {
@@ -46,10 +43,12 @@ const resolvers = {
         },
 
         flights: async () => {
-            const clientList = await Clients.find();
             const flightList = await Flights.find();
-
+            const clientList = await Clients.find();
+            const companyList = await Companies.find();
+            const directList = await Directs.find();
             const flights = []
+
             clientList.forEach(user => {
                 if (user.doneFlights) {
                     flights.push(...user.doneFlights)
@@ -57,19 +56,20 @@ const resolvers = {
             })
             const useFlights = [...new Set(flights)]
 
-            return flightList.map(flight => {
-                if (useFlights.includes(flight.id)) flight.passengers = clientList.filter(user =>
-                    user.doneFlights && user.doneFlights.includes(flight.id))
-                return flight
+            return flightList.map(({id, date, time, companyId, directId}) => {
+                const out = {
+                    id,
+                    date,
+                    time,
+                    company: getValue(companyList, 'companyId', companyId, 'name'),
+                    direct: getValue(directList, 'directId', directId, 'direct')
+                }
+                if (useFlights.includes(id)) {
+                    out.passengers = clientList.filter(user =>
+                        user.doneFlights && user.doneFlights.includes(id))
+                }
+                return out
             });
-        },
-
-        flight: async (parent, args) => {
-            const userList = await Users.find();
-            const flightList = await Flights.find();
-            const flight = flightList.find(({id}) => id === args.id)
-            const passengers = userList.filter(user => user.doneFlights ? user.doneFlights.includes(Number(args.id)) : false)
-            return passengers.length ? {...flight, passengers} : flight
         },
     },
     Mutation: {
@@ -91,6 +91,15 @@ const resolvers = {
         createFlight: async (parent, args) => {
             const newFlight = new Flights({...args.input})
             return await newFlight.save()
+        },
+
+        updateClient: async (parent, args) => {
+            console.log('updateClient')
+            const clients = await Clients.find();
+            const  currentClient = clients.find(client => client.id === args.input.currentClient)
+            const out = await Clients.updateOne({_id: currentClient.id},
+                {$addToSet: {doneFlights: args.input.currentFlight}});
+            return currentClient
         },
     }
 };

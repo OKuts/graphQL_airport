@@ -1,12 +1,9 @@
 import {useState, Fragment} from "react";
 import arrowDown from '../images/arrow-down.svg'
 import arrowUp from '../images/arrow-up.svg'
-import {getValue} from "../helpers/getValue";
 
-export const FlightsList = ({flights, companiesData, directData}) => {
+export const FlightsList = ({flights}) => {
     const [currentFlight, setCurrentFlight] = useState(null)
-    const {data: companies} = companiesData
-    const {data: directs} = directData
 
     return (
         <>
@@ -24,22 +21,19 @@ export const FlightsList = ({flights, companiesData, directData}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {flights.map(({id, date, time, companyId, directId, passengers}, i) =>
+                {flights.map(({id, date, time, company, direct, passengers}, i) =>
                     <Fragment key={id}>
                         <tr className="item-flight">
                             <td>{i + 1}</td>
                             <td>{date}</td>
                             <td>{time}</td>
-                            <td>{getValue(companies.companies, 'companyId', companyId, 'name')}</td>
-                            <td>{getValue(directs.directs, 'directId', directId, 'direct')}</td>
+                            <td>{company}</td>
+                            <td>{direct}</td>
                             <td
                                 onClick={() => setCurrentFlight(currentFlight === i ? null : i)}>
-                                {passengers
-                                    ? <img
-                                        className="arrow"
-                                        src={currentFlight === i ? arrowUp : arrowDown}
-                                        alt="arrow-down"/> :
-                                    ''}
+                                {passengers && (currentFlight === i
+                                    ? <span className="arrow-up">&#9650;</span>
+                                    : <span className="arrow-down">&#9660;</span>)}
                             </td>
                         </tr>
                         {passengers &&

@@ -1,4 +1,4 @@
-import {ClientsList, FlightsList, Header, NewClient, NewFlight} from "../components";
+import {ClientsList, ClientToFlight, FlightsList, Header, NewClient, NewFlight} from "../components";
 import {useEffect, useState} from "react";
 import {clientsNav, flightsNav, mainNavLinks} from "../config/configData";
 import {SubMenu} from "../components/SubMenu";
@@ -20,8 +20,6 @@ export const Home = () => {
         refetch: clientsRefetch
     } = useQuery(QUERY_ALL_CLIENTS)
 
-    console.log(clients)
-
     const {
         data: flights,
         loading: flightsLoading,
@@ -38,23 +36,24 @@ export const Home = () => {
             case '11':
                 return <NewClient refetch={clientsRefetch}/>
             case '12':
+            case '22':
+                return <ClientToFlight
+                            clientsRefetch={clientsRefetch}
+                            flightsRefetch={flightsRefetch}
+                            flights={flights.flights}
+                            clients={clients.clients}/>
                 return null
             case '13':
                 return !clientsLoading && !clientsError
                     ? <ClientsList clients={clients.clients}/> : null
             case '21':
                 return <NewFlight
-                    refetch={flightsRefetch}
-                    companiesData={companiesData}
-                    directData={directsData}/>
-            case '22':
-                return null
+                            refetch={flightsRefetch}
+                            companiesData={companiesData}
+                            directData={directsData}/>
             case '23':
                 return !flightsLoading && !flightsError
-                    ? <FlightsList
-                        flights={flights.flights}
-                        companiesData={companiesData}
-                        directData={directsData}/> : null
+                    ? <FlightsList flights={flights.flights}/> : null
         }
     }
 

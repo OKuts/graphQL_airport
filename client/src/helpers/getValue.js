@@ -1,1 +1,1 @@
-export const getValue = (arr, key, value, outName) => arr.find(el => el.id === value)[outName]
+export const getValue = (arr, value, outName) => arr.find(el => el.id === value)[outName]

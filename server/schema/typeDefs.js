@@ -8,6 +8,7 @@ const typeDefs = gql`
         time: String!
         company: String!
         direct: String!
+        passengers: [Client]
     }
     
     type Flight {
@@ -16,7 +17,6 @@ const typeDefs = gql`
         time: String!
         companyId: String!
         directId: String!
-        passengers: [Client]
     }
 
     type Client {
@@ -38,13 +38,13 @@ const typeDefs = gql`
         id: ID!
         name: String!
     }
-
+    
     type Query {
         clients: [Client!]!
-        flights: [Flight!]!      
+        flights: [FlightOut!]!      
         directs: [Direct!]! 
         companies: [Company!]! 
-        
+  
         flight(id: ID!): Flight!
     }
     
@@ -66,8 +66,13 @@ const typeDefs = gql`
         name: String!
     }
     
-        input CreateDirectInput {
+    input CreateDirectInput {
         direct: String!
+    }
+    
+    input UpdateClientInput {
+        currentClient: String!
+        currentFlight: String!
     }
     
     type Mutation {
@@ -75,6 +80,8 @@ const typeDefs = gql`
         createCompany(input: CreateCompanyInput!): Company!
         createDirect(input: CreateDirectInput!): Direct!
         createFlight(input: CreateFlightInput!): Flight!
+        
+        updateClient(input: UpdateClientInput!): Client!
     }
 `
 module.exports = { typeDefs };

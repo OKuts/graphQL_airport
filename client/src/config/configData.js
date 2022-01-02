@@ -2,12 +2,12 @@ export const mainNavLinks = ['Clients', 'Flights']
 
 export const flightsNav = [
     'Registration flight',
-    'Get flight data',
+    'Client to flight',
     'Flights list']
 
 export const clientsNav = [
     'Registration client',
-    'Get client data',
+    'Client to flight',
     'Clients list'
 ]
 
