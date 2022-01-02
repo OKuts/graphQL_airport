@@ -3,7 +3,7 @@ const Flights = require('../models/flights')
 const Companies = require('../models/companies')
 const Directs = require('../models/directs')
 
-const getValue = (arr, key, value, outName) => arr.find(el => el.id === value)[outName]
+const getValue = (arr, value, outName) => arr.find(el => el.id === value)[outName]
 
 const getUserFlights = (client, companyList, directList, flightList) => {
     client.chosenFlights = client.doneFlights.map(item => {
@@ -11,8 +11,8 @@ const getUserFlights = (client, companyList, directList, flightList) => {
         return {
             date: currentFlight.date,
             time: currentFlight.time,
-            company: getValue(companyList, 'companyId', currentFlight.companyId, 'name'),
-            direct: getValue(directList, 'directId', currentFlight.directId, 'direct')
+            company: getValue(companyList, currentFlight.companyId, 'name'),
+            direct: getValue(directList, currentFlight.directId, 'direct')
         }
     })
     return client
@@ -21,11 +21,12 @@ const getUserFlights = (client, companyList, directList, flightList) => {
 const resolvers = {
     Query: {
         clients: async () => {
-            const companyList = await Companies.find();
-            const directList = await Directs.find();
-            const clientList = await Clients.find();
-            const flightList = await Flights.find();
-            return await clientList.map( client => {
+            const companyList = await Companies.find()
+            const directList = await Directs.find()
+            const clientList = await Clients.find()
+            const flightList = await Flights.find()
+
+            return clientList.map( client => {
                 return client.doneFlights.length
                     ? getUserFlights(client, companyList, directList, flightList)
                     : client
@@ -61,8 +62,8 @@ const resolvers = {
                     id,
                     date,
                     time,
-                    company: getValue(companyList, 'companyId', companyId, 'name'),
-                    direct: getValue(directList, 'directId', directId, 'direct')
+                    company: getValue(companyList, companyId, 'name'),
+                    direct: getValue(directList, directId, 'direct')
                 }
                 if (useFlights.includes(id)) {
                     out.passengers = clientList.filter(user =>
