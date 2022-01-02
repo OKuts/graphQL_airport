@@ -1,6 +1,4 @@
 import {Fragment, useState} from "react";
-import arrowUp from "../images/arrow-up.svg";
-import arrowDown from "../images/arrow-down.svg";
 
 export const ClientsList = ({clients}) => {
     const [currentClient, setCurrentClient] = useState(null)

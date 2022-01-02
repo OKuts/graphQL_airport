@@ -42,7 +42,6 @@ export const Home = () => {
                             flightsRefetch={flightsRefetch}
                             flights={flights.flights}
                             clients={clients.clients}/>
-                return null
             case '13':
                 return !clientsLoading && !clientsError
                     ? <ClientsList clients={clients.clients}/> : null
@@ -54,6 +53,8 @@ export const Home = () => {
             case '23':
                 return !flightsLoading && !flightsError
                     ? <FlightsList flights={flights.flights}/> : null
+            default:
+                return null
         }
     }
 

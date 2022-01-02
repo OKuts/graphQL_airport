@@ -1,6 +1,4 @@
 import {useState, Fragment} from "react";
-import arrowDown from '../images/arrow-down.svg'
-import arrowUp from '../images/arrow-up.svg'
 
 export const FlightsList = ({flights}) => {
     const [currentFlight, setCurrentFlight] = useState(null)

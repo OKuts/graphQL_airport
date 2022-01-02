@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useMutation, useQuery} from "@apollo/client";
+import {useMutation} from "@apollo/client";
 import {CREATE_COMPANY} from "../mutations/create_company";
 import {CREATE_DIRECT} from "../mutations/create_direct";
 import {formFlightSchema} from "./schemas/formFlightSchema";

@@ -5,7 +5,6 @@ import {formClientSchema} from "./schemas/formClientSchema";
 import {useMutation} from "@apollo/client";
 
 import {CREATE_CLIENT} from "../mutations/create_client";
-import {getValue} from "../helpers/getValue";
 
 const citizenship = ['CANADA', 'UKRAINE', 'USA', 'FRANCE']
 
