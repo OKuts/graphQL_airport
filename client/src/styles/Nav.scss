@@ -1,7 +1,7 @@
 .app-nav {
   display: flex;
 
-  &__item {
+  a {
     padding: 20px;
 
     &:hover {
@@ -18,7 +18,7 @@
   background-color: #96acd4;
   color: aliceblue;
 
-  span {
+  a {
     padding: 0 20px;
 
     &:hover {

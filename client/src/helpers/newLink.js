@@ -1,0 +1,1 @@
+export const newLink = link => link.replaceAll(' ','_').toLowerCase()

@@ -1,16 +1,12 @@
-import {mainNavLinks} from "../config/configData";
+import {NavLink} from "react-router-dom";
+import {newLink} from "../helpers/newLink";
 
-export const Menu = ({handler, menu}) => {
+export const Menu = ({list, cn}) => {
 
     return (
-        <nav className="app-nav">
-            {mainNavLinks.map((link, i) =>
-                <span
-                    onClick={() => handler(i + 1)}
-                    className={i + 1 === menu ? "app-nav__item active" : "app-nav__item"}
-                    key={link}>
-                    {link}
-                </span>)}
+        <nav className={cn}>
+            {list.map((link, i) =>
+                <NavLink key={link} to={newLink(link)}>{link}</NavLink>)}
         </nav>
     )
 }

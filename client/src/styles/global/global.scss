@@ -2,19 +2,29 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
 }
 
 body {
   background-color: aliceblue;
 }
 
+a {
+  text-decoration: none;
+}
+
 .site-wrapper {
   max-width: 1280px;
   min-width: 360px;
-  height: calc(100vh - 110px);
-  padding: 50px 10px 0;
   margin: 0 auto;
+}
+
+.page-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
   &::before {
     content: '';
